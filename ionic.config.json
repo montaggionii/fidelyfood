@@ -1,0 +1,7 @@
+{
+  "name": "fidelyfood",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
