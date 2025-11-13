@@ -1,0 +1,12 @@
+<!-- coupons.component.html -->
+<ion-content class="ion-padding">
+  <h2>Cupones</h2>
+  <ion-card *ngFor="let c of coupons" [color]="c.redeemed ? 'medium' : 'success'">
+    <ion-card-header>
+      <ion-card-title>{{ c.restaurant }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      {{ c.reward }} <span *ngIf="c.redeemed">(Canjeado)</span>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

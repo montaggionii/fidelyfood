@@ -1,0 +1,60 @@
+<!-- home.component.html -->
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title class="ion-text-center">FidelyApp 🍽️</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="home-content" fullscreen>
+  <!-- Saludo -->
+  <div class="greeting">
+    <h1>¡Hola, Anthony!</h1>
+    <p>Descubre tus recompensas favoritas</p>
+  </div>
+
+  <!-- Botón Escanear QR -->
+  <ion-button expand="block" class="scan-btn" (click)="scanTicket()">
+    <ion-icon name="qr-code-outline"></ion-icon>
+    Escanear QR
+  </ion-button>
+
+  <!-- Puntos totales -->
+  <div class="total-points">
+    <ion-progress-bar [value]="totalPointsProgress"></ion-progress-bar>
+    <p>{{ totalPoints }} / {{ totalPointsMax }} puntos acumulados</p>
+  </div>
+
+  <!-- Lista de favoritos -->
+  <div class="favorites-header">
+    <h2>Negocios favoritos</h2>
+    <a href="#">Ver todos</a>
+  </div>
+
+  <ion-list>
+    <ion-card *ngFor="let r of favorites" class="favorite-card">
+      <img [src]="r.image" alt="{{ r.name }}">
+      <ion-card-header>
+        <ion-card-title>{{ r.name }}</ion-card-title>
+        <ion-card-subtitle>
+          <ion-icon name="location-outline"></ion-icon>{{ r.address }}
+        </ion-card-subtitle>
+        <p class="reward">{{ r.nextReward }}</p>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-progress-bar [value]="r.currentPoints / r.totalPoints"></ion-progress-bar>
+        <p class="points">{{ r.currentPoints }} / {{ r.totalPoints }}</p>
+        <ion-icon class="category-icon" [name]="r.icon"></ion-icon>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+
+  <!-- Tips -->
+  <div class="tips">
+    <h3>Consejos</h3>
+    <ion-list>
+      <ion-item *ngFor="let tip of tips">
+        <ion-label>{{ tip }}</ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>

@@ -1,0 +1,99 @@
+/* home.component.scss */
+.home-content {
+  background-color: #ffffff;
+  padding: 16px;
+
+  .greeting {
+    text-align: left;
+    margin-bottom: 16px;
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #ffffff;
+    }
+    p {
+      font-size: 1rem;
+      color: #666666;
+    }
+  }
+
+  .scan-btn {
+    --background: #00bcd4;
+    --border-radius: 20px;
+    margin-bottom: 16px;
+    font-weight: bold;
+    ion-icon {
+      margin-right: 8px;
+      font-size: 1.4rem;
+    }
+  }
+
+  .total-points {
+    margin-bottom: 24px;
+    ion-progress-bar {
+      --progress-background: #00bcd4;
+      --background: #e0e0e0;
+      height: 10px;
+      border-radius: 10px;
+    }
+    p {
+      color: #00bcd4;
+      font-weight: bold;
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+  }
+
+  .favorites-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+
+    h2 {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    a {
+      font-size: 0.9rem;
+      color: #00bcd4;
+      text-decoration: none;
+    }
+  }
+
+  .favorite-card {
+    margin-bottom: 16px;
+    img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    .reward {
+      color: #00bcd4;
+      font-weight: bold;
+      margin-top: 4px;
+    }
+    .points {
+      color: #00bcd4;
+      font-weight: bold;
+      font-size: 0.85rem;
+      margin-top: 4px;
+    }
+    .category-icon {
+      font-size: 1.4rem;
+      color: #555555;
+      margin-top: 4px;
+    }
+  }
+
+  .tips {
+    margin-top: 24px;
+    h3 {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+  }
+}

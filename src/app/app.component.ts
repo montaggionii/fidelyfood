@@ -1,11 +1,21 @@
 import { Component } from '@angular/core';
-import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { IonicModule, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-root',
-  templateUrl: 'app.component.html',
-  imports: [IonApp, IonRouterOutlet],
+  templateUrl: './app.component.html',
+  standalone: true,
+  imports: [IonicModule]
 })
 export class AppComponent {
-  constructor() {}
+  constructor(private toastCtrl: ToastController) {}
+
+  async scanTicket() {
+    const toast = await this.toastCtrl.create({
+      message: '📸 Escaneo simulado: Ticket registrado con éxito',
+      duration: 2000,
+      color: 'success',
+    });
+    await toast.present();
+  }
 }
