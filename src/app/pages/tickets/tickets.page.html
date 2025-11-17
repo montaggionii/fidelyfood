@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Tickets de Prueba</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- Nombre del ticket -->
+  <ion-item>
+    <ion-label position="floating">Nombre del ticket</ion-label>
+    <ion-input [(ngModel)]="nombre"></ion-input>
+  </ion-item>
+
+  <!-- Descripción -->
+  <ion-item>
+    <ion-label position="floating">Descripción</ion-label>
+    <ion-input [(ngModel)]="descripcion"></ion-input>
+  </ion-item>
+
+  <!-- Precio -->
+  <ion-item>
+    <ion-label position="floating">Precio</ion-label>
+    <ion-input type="number" [(ngModel)]="precio"></ion-input>
+  </ion-item>
+
+  <!-- Selección de usuario -->
+  <ion-item>
+    <ion-label>Usuario</ion-label>
+    <ion-select [(ngModel)]="usuarioSeleccionado" placeholder="Selecciona un usuario">
+      <ion-select-option *ngFor="let u of usuarios" [value]="u">{{ u.nombre }}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <!-- Botón agregar ticket -->
+  <ion-button expand="block" (click)="agregarTicket()" style="margin-top: 16px;">
+    Agregar Ticket
+  </ion-button>
+
+  <!-- Lista de tickets -->
+  <ion-list>
+    <ion-item *ngFor="let t of tickets">
+      {{ t.toString() }}
+    </ion-item>
+  </ion-list>
+
+  <!-- Botón enviar tickets -->
+  <ion-button expand="block" color="success" (click)="enviarTickets()">
+    Enviar Tickets
+  </ion-button>
+
+</ion-content>

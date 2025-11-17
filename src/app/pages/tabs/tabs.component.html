@@ -1,73 +1,31 @@
-<!-- src/app/pages/tabs/tabs.component.html -->
 <ion-tabs>
 
+
   <ion-tab-bar slot="bottom">
-    <!-- Inicio -->
-    <ion-tab-button [routerLink]="['/home']">
-      <ion-icon name="home-outline"></ion-icon> <!-- Ya es adecuado -->
+    <ion-tab-button routerLink="home" routerDirection="root">
+      <ion-icon name="home-outline"></ion-icon>
       <ion-label>Inicio</ion-label>
     </ion-tab-button>
 
-    <!-- Puntos -->
-    <ion-tab-button [routerLink]="['/points']">
-      <ion-icon name="star-outline"></ion-icon> <!-- Representa puntos o premios -->
+    <ion-tab-button routerLink="points" routerDirection="root">
+      <ion-icon name="podium-outline"></ion-icon>
       <ion-label>Puntos</ion-label>
     </ion-tab-button>
 
-    <!-- Cupones -->
-    <ion-tab-button [routerLink]="['/coupons']">
-      <ion-icon name="pricetag-outline"></ion-icon> <!-- Representa cupones o descuentos -->
+    <ion-tab-button routerLink="coupons" routerDirection="root">
+      <ion-icon name="pricetag-outline"></ion-icon>
       <ion-label>Cupones</ion-label>
     </ion-tab-button>
 
-    <!-- Mapa -->
-    <ion-tab-button [routerLink]="['/map']">
-      <ion-icon name="map-outline"></ion-icon> <!-- Para ubicación y mapa -->
-      <ion-label>Mapa</ion-label>
+    <ion-tab-button routerLink="map" routerDirection="root">
+      <ion-icon name="map-outline"></ion-icon>
+      <ion-label>Mapas</ion-label>
     </ion-tab-button>
 
-    <!-- Ajustes -->
-    <ion-tab-button [routerLink]="['/settings']">
-      <ion-icon name="settings-outline"></ion-icon> <!-- Ajustes o configuración -->
+    <ion-tab-button routerLink="settings" routerDirection="root">
+      <ion-icon name="settings-outline"></ion-icon>
       <ion-label>Ajustes</ion-label>
     </ion-tab-button>
   </ion-tab-bar>
 
-  <router-outlet></router-outlet>
-</ion-tabs><!-- src/app/pages/tabs/tabs.component.html -->
-<ion-tabs>
-
-  <ion-tab-bar slot="bottom">
-    <!-- Inicio -->
-    <ion-tab-button [routerLink]="['/home']">
-      <ion-icon name="home-outline"></ion-icon> <!-- Ya es adecuado -->
-      <ion-label>Inicio</ion-label>
-    </ion-tab-button>
-
-    <!-- Puntos -->
-    <ion-tab-button [routerLink]="['/points']">
-      <ion-icon name="star-outline"></ion-icon> <!-- Representa puntos o premios -->
-      <ion-label>Puntos</ion-label>
-    </ion-tab-button>
-
-    <!-- Cupones -->
-    <ion-tab-button [routerLink]="['/coupons']">
-      <ion-icon name="pricetag-outline"></ion-icon> <!-- Representa cupones o descuentos -->
-      <ion-label>Cupones</ion-label>
-    </ion-tab-button>
-
-    <!-- Mapa -->
-    <ion-tab-button [routerLink]="['/map']">
-      <ion-icon name="map-outline"></ion-icon> <!-- Para ubicación y mapa -->
-      <ion-label>Mapa</ion-label>
-    </ion-tab-button>
-
-    <!-- Ajustes -->
-    <ion-tab-button [routerLink]="['/settings']">
-      <ion-icon name="settings-outline"></ion-icon> <!-- Ajustes o configuración -->
-      <ion-label>Ajustes</ion-label>
-    </ion-tab-button>
-  </ion-tab-bar>
-
-  <router-outlet></router-outlet>
 </ion-tabs>

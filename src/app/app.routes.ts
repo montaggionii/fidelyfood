@@ -10,17 +10,15 @@ import { SettingsComponent } from './pages/settings/settings.component';
 export const routes: Routes = [
   {
     path: '',
-    component: TabsComponent,  // Componente principal con la barra de tabs
+    component: TabsComponent,
     children: [
       { path: 'home', component: HomeComponent },
       { path: 'points', component: PointsComponent },
       { path: 'coupons', component: CouponsComponent },
       { path: 'map', component: MapComponent },
       { path: 'settings', component: SettingsComponent },
-      // Redirige a "home" si la ruta es vacía
-      { path: '', redirectTo: 'home', pathMatch: 'full' }
+      { path: '', redirectTo: 'home', pathMatch: 'full' } // ruta por defecto
     ]
   },
-  // Redirige cualquier ruta no encontrada a la página principal con tabs
-  { path: '**', redirectTo: '', pathMatch: 'full' }
+  { path: '**', redirectTo: '', pathMatch: 'full' } // cualquier ruta desconocida
 ];
