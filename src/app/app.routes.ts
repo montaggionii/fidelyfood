@@ -1,24 +1,47 @@
-// src/app/app.routes.ts
 import { Routes } from '@angular/router';
 import { TabsComponent } from './pages/tabs/tabs.component';
-import { HomeComponent } from './pages/home/home.component';
-import { PointsComponent } from './pages/points/points.component';
-import { CouponsComponent } from './pages/coupons/coupons.component';
-import { MapComponent } from './pages/map/map.component';
-import { SettingsComponent } from './pages/settings/settings.component';
+import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   {
-    path: '',
+    path: 'auth',
+    loadComponent: () => import('./pages/auth/auth.page').then(m => m.AuthPage)
+  },
+
+  {
+    path: 'tabs',
     component: TabsComponent,
+    canActivate: [AuthGuard],
     children: [
-      { path: 'home', component: HomeComponent },
-      { path: 'points', component: PointsComponent },
-      { path: 'coupons', component: CouponsComponent },
-      { path: 'map', component: MapComponent },
-      { path: 'settings', component: SettingsComponent },
-      { path: '', redirectTo: 'home', pathMatch: 'full' } // ruta por defecto
+      {
+        path: 'home',
+        loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent),
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'points',
+        loadComponent: () => import('./pages/points/points.component').then(m => m.PointsComponent),
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'coupons',
+        loadComponent: () => import('./pages/coupons/coupons.component').then(m => m.CouponsComponent),
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'map',
+        loadComponent: () => import('./pages/map/map.component').then(m => m.MapComponent),
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'settings',
+        loadComponent: () => import('./pages/settings/settings.component').then(m => m.SettingsComponent),
+        canActivate: [AuthGuard]
+      },
+      { path: '', redirectTo: 'home', pathMatch: 'full' }
     ]
   },
-  { path: '**', redirectTo: '', pathMatch: 'full' } // cualquier ruta desconocida
+
+  { path: '', redirectTo: 'auth', pathMatch: 'full' },
+  { path: '**', redirectTo: 'auth' }
 ];

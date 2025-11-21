@@ -1,24 +1,25 @@
-// src/main.ts
 import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
 import { provideRouter, withPreloading, PreloadAllModules, RouteReuseStrategy } from '@angular/router';
 import { provideIonicAngular, IonicRouteStrategy } from '@ionic/angular/standalone';
 import { provideHttpClient } from '@angular/common/http';
-import { routes } from './app/app.routes';
 
-// 🔹 Firebase imports
+// Firebase
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
-import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+import { provideAuth, getAuth } from '@angular/fire/auth';
+
+import { routes } from './app/app.routes';
 import { environment } from './environments/environment';
 
 bootstrapApplication(AppComponent, {
   providers: [
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, // necesario para Ionic
-    provideIonicAngular(),                                         // configura Ionic
-    provideRouter(routes, withPreloading(PreloadAllModules)),      // configura rutas con preload
-    provideHttpClient(),                                           // habilita HttpClient
-    // 🔹 Firebase providers
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    provideIonicAngular(),
+    provideRouter(routes, withPreloading(PreloadAllModules)),
+    provideHttpClient(),
+
+    // Firebase correctamente inicializado
     provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideFirestore(() => getFirestore())
+    provideAuth(() => getAuth()),
   ],
 });

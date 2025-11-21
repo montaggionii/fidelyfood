@@ -1,11 +1,13 @@
+// environment.ts
 export const environment = {
   production: false,
   firebase: {
-    apiKey: "AIzaSyDS4q0zqFzKRgLQbZm9VKp7hsyvRSws_wQ",
-    authDomain: "fidelyfood.firebaseapp.com",
-    projectId: "fidelyfood",
-    storageBucket: "fidelyfood.appspot.com",
-    messagingSenderId: "270685684909",
-    appId: "1:270685684909:web:7ac248b81927c80ee7ad1e"
+    apiKey: "AIzaSyDSfooN5a1F6mMm8p2EeeUITO5zyocSbhg",
+    authDomain: "fidelyapp-31364.firebaseapp.com",
+    projectId: "fidelyapp-31364",
+    storageBucket: "fidelyapp-31364.firebasestorage.app",
+    messagingSenderId: "104436285885",
+    appId: "1:104436285885:web:f1b28c72c5a1ce94e992d4",
+    measurementId: "G-0J8Z3RTVFX"
   }
 };

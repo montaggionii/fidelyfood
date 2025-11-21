@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen class="login-content">
+  <div class="login-wrapper">
+    <ion-item>
+      <ion-label position="floating">Email</ion-label>
+      <ion-input [(ngModel)]="email" type="email"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input [(ngModel)]="password" type="password"></ion-input>
+    </ion-item>
+
+    <ion-button expand="block" (click)="login()" [disabled]="loading">
+      {{ loading ? 'Cargando...' : 'Iniciar sesión' }}
+    </ion-button>
+
+    <p class="text-center" style="margin-top: 16px;">
+      ¿No tienes cuenta?
+      <button type="button" class="link-button" (click)="goToRegister()">Crear cuenta</button>
+    </p>
+
+    <p *ngIf="errorMsg" class="error-msg">{{ errorMsg }}</p>
+  </div>
+</ion-content>

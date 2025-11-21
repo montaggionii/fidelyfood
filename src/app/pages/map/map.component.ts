@@ -1,34 +1,44 @@
-// src/app/pages/map/map.component.ts
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
+import { RestaurantService, Restaurant } from '../../services/restaurant.service';
 
-declare const google: any;
+declare var google: any;
 
 @Component({
   selector: 'app-map',
-  standalone: true,
-  imports: [CommonModule, IonicModule],
   templateUrl: './map.component.html',
-  styleUrls: ['./map.component.scss']
+  styleUrls: ['./map.component.scss'],
+  standalone: true,
+  imports: [CommonModule, IonicModule]
 })
-export class MapComponent implements AfterViewInit {
+export class MapComponent implements OnInit, AfterViewInit {
+
+  restaurants: Restaurant[] = [];
   map!: google.maps.Map;
 
-  ngAfterViewInit() {
-    this.loadMap();
+  constructor(private restaurantService: RestaurantService) {}
+
+  ngOnInit() {
+    // Cargar los restaurantes desde backend
+    this.loadRestaurants();
   }
 
-  loadMap() {
-    const mapElement = document.getElementById('map') as HTMLElement;
-    const defaultLocation = { lat: 39.4699, lng: -0.3763 }; // Valencia
+  ngAfterViewInit() {
+    // Inicializar el mapa
+    this.initMap();
+  }
 
+  initMap() {
+    const defaultLocation = { lat: 39.4699, lng: -0.3763 }; // Valencia centro
+
+    const mapElement = document.getElementById('map') as HTMLElement;
     this.map = new google.maps.Map(mapElement, {
       center: defaultLocation,
       zoom: 14,
     });
 
-    // Intentar obtener la ubicación actual
+    // Intentar centrar en la ubicación del usuario
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -36,9 +46,9 @@ export class MapComponent implements AfterViewInit {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           };
-
-          // Centrar mapa y agregar marcador de usuario
           this.map.setCenter(userLocation);
+
+          // Marker del usuario
           new google.maps.Marker({
             position: userLocation,
             map: this.map,
@@ -48,60 +58,55 @@ export class MapComponent implements AfterViewInit {
             },
           });
 
-          // Buscar restaurantes cercanos
-          this.buscarRestaurantes(userLocation);
+          // Agregar markers de restaurantes
+          this.addMarkers();
         },
         () => {
-          console.warn('No se pudo obtener la ubicación.');
+          console.warn('No se pudo obtener la ubicación, mostrando Valencia.');
+          this.addMarkers();
         }
       );
     } else {
-      // Si no hay geolocalización, buscar restaurantes en el centro de Valencia
-      this.buscarRestaurantes(defaultLocation);
+      // Sin geolocalización, mostrar Valencia y restaurantes
+      this.addMarkers();
     }
   }
 
-  buscarRestaurantes(location: { lat: number; lng: number }) {
-    const service = new google.maps.places.PlacesService(this.map);
-
-    service.nearbySearch(
-      {
-        location: location,
-        radius: 2000, // 2 km
-        type: ['restaurant'],
+  loadRestaurants() {
+    this.restaurantService.getRestaurants().subscribe({
+      next: (data) => {
+        this.restaurants = data;
+        // Si el mapa ya está inicializado, agregar los markers
+        if (this.map) this.addMarkers();
       },
-      (results: any, status: any) => {
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
-          results.forEach((place: any) => {
-            if (place.geometry?.location) {
-              const marker = new google.maps.Marker({
-                position: place.geometry.location,
-                map: this.map,
-                title: place.name,
-                icon: {
-                  url: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
-                },
-              });
+      error: (err) => console.error('Error al cargar restaurantes', err)
+    });
+  }
 
-              // Crear ventana de información
-              const infoWindow = new google.maps.InfoWindow({
-                content: `
-                  <div>
-                    <h3>${place.name}</h3>
-                    <p>${place.vicinity || ''}</p>
-                  </div>
-                `
-              });
+  addMarkers() {
+    if (!this.map || !this.restaurants.length) return;
 
-              marker.addListener('click', () => {
-                infoWindow.open(this.map, marker);
-              });
-            }
-          });
-        } else {
-          console.warn('No se encontraron restaurantes cerca.');
-        }
-      }
-    );
+    this.restaurants.forEach(r => {
+      if (!r.lat || !r.lng) return; // Asegurarse de que tenga coordenadas
+
+      const marker = new google.maps.Marker({
+        position: { lat: r.lat, lng: r.lng },
+        map: this.map,
+        title: r.name
+      });
+
+      const infoWindow = new google.maps.InfoWindow({
+        content: `
+          <div>
+            <h3>${r.name}</h3>
+            <p>${r.address}</p>
+            ${r.description ? `<p>${r.description}</p>` : ''}
+            ${r.openingHours ? `<p>Horario: ${r.openingHours}</p>` : ''}
+          </div>
+        `
+      });
+
+      marker.addListener('click', () => infoWindow.open(this.map, marker));
+    });
   }
 }

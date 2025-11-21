@@ -1,42 +1,46 @@
 <ion-header>
-  <ion-toolbar color="light">
+  <ion-toolbar color="primary">
     <ion-title>Configuración</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <div class="settings-container">
-    <ion-list>
-      <ion-list-header>
-        <ion-label>Preferencias de usuario</ion-label>
-      </ion-list-header>
+<ion-content class="settings-content">
+  <ion-list>
+    <ion-item>
+      <ion-avatar slot="start">
+        <img [src]="userPhoto" />
+      </ion-avatar>
+      <ion-label>Foto de perfil</ion-label>
+      <input type="file" (change)="changePhoto($event)" />
+    </ion-item>
 
-      <ion-item>
-        <ion-label>Notificaciones</ion-label>
-        <ion-toggle [(ngModel)]="notificationsEnabled"></ion-toggle>
-      </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Nombre</ion-label>
+      <ion-input [(ngModel)]="userName"></ion-input>
+    </ion-item>
 
-      <ion-item>
-        <ion-label>Tema oscuro</ion-label>
-        <ion-toggle [(ngModel)]="darkMode" (ionChange)="toggleTheme()"></ion-toggle>
-      </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Email</ion-label>
+      <ion-input [(ngModel)]="userEmail"></ion-input>
+    </ion-item>
 
-      <ion-item>
-        <ion-label>Idioma</ion-label>
-        <ion-select [(ngModel)]="language" placeholder="Selecciona idioma">
-          <ion-select-option value="es">Español</ion-select-option>
-          <ion-select-option value="en">Inglés</ion-select-option>
-          <ion-select-option value="fr">Francés</ion-select-option>
-        </ion-select>
-      </ion-item>
+    <ion-item>
+      <ion-button expand="block" (click)="changeProfile()">Guardar perfil</ion-button>
+    </ion-item>
 
-      <ion-list-header>
-        <ion-label>Cuenta</ion-label>
-      </ion-list-header>
+    <ion-item>
+      <ion-label>Idioma</ion-label>
+      <ion-input [(ngModel)]="language" placeholder="es / en"></ion-input>
+      <ion-button slot="end" (click)="changeLanguage()">Cambiar</ion-button>
+    </ion-item>
 
-      <ion-item button detail="true" (click)="cerrarSesion()" color="danger">
-        <ion-label color="danger">Cerrar sesión</ion-label>
-      </ion-item>
-    </ion-list>
-  </div>
+    <ion-item>
+      <ion-label>Modo oscuro</ion-label>
+      <ion-toggle [(ngModel)]="darkMode" (ionChange)="toggleDarkMode()"></ion-toggle>
+    </ion-item>
+
+    <ion-item>
+      <ion-button expand="block" color="danger" (click)="logout()">Cerrar sesión</ion-button>
+    </ion-item>
+  </ion-list>
 </ion-content>

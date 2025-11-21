@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Crear cuenta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen class="register-content">
+  <div class="register-wrapper">
+    <ion-item>
+      <ion-label position="floating">Nombre completo</ion-label>
+      <ion-input [(ngModel)]="name" type="text"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Correo electrónico</ion-label>
+      <ion-input [(ngModel)]="email" type="email"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input [(ngModel)]="password" type="password"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Confirmar contraseña</ion-label>
+      <ion-input [(ngModel)]="confirmPassword" type="password"></ion-input>
+    </ion-item>
+
+    <ion-button expand="block" (click)="register()" [disabled]="loading">
+      {{ loading ? 'Cargando...' : 'Crear cuenta' }}
+    </ion-button>
+
+    <p *ngIf="errorMsg" class="error-msg">{{ errorMsg }}</p>
+  </div>
+</ion-content>

@@ -1,0 +1,49 @@
+<ion-content class="auth-content">
+
+  <div class="auth-box">
+
+    <h2>{{ isLoginMode ? 'Iniciar Sesión' : 'Crear Cuenta' }}</h2>
+
+    <!-- NOMBRE (solo registro) -->
+    <ion-item *ngIf="!isLoginMode">
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input [(ngModel)]="name"></ion-input>
+    </ion-item>
+
+    <!-- EMAIL -->
+    <ion-item>
+      <ion-label position="floating">Email</ion-label>
+      <ion-input [(ngModel)]="email" type="email"></ion-input>
+    </ion-item>
+
+    <!-- PASSWORD -->
+    <ion-item>
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input [(ngModel)]="password" type="password"></ion-input>
+    </ion-item>
+
+    <!-- CONFIRM PASSWORD -->
+    <ion-item *ngIf="!isLoginMode">
+      <ion-label position="floating">Repetir contraseña</ion-label>
+      <ion-input [(ngModel)]="confirmPassword" type="password"></ion-input>
+    </ion-item>
+
+    <!-- BOTÓN -->
+    <ion-button expand="block" (click)="submit()">
+      {{ loading ? 'Cargando...' : (isLoginMode ? 'Entrar' : 'Registrarme') }}
+    </ion-button>
+
+    <!-- MODO -->
+    <p class="switch-text">
+      {{ isLoginMode ? '¿No tienes cuenta?' : '¿Ya tienes cuenta?' }}
+      <button type="button" (click)="toggleMode()">
+        {{ isLoginMode ? 'Crear cuenta' : 'Iniciar sesión' }}
+      </button>
+    </p>
+
+    <!-- ERROR -->
+    <p *ngIf="errorMsg" class="error">{{ errorMsg }}</p>
+
+  </div>
+
+</ion-content>

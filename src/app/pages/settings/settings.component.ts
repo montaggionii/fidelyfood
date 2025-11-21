@@ -1,25 +1,56 @@
-import { Component } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
-import { FormsModule } from '@angular/forms'; // para ngModel
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import {
+  IonButton, IonItem, IonLabel, IonInput, IonAvatar, IonToggle,
+  IonContent, IonHeader, IonToolbar, IonTitle, IonList
+} from '@ionic/angular/standalone';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [IonicModule, FormsModule], // 🔑 Muy importante
   templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.scss']
+  styleUrls: ['./settings.component.scss'],
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonButton,
+    IonItem,
+    IonLabel,
+    IonInput,
+    IonAvatar,
+    IonToggle,
+    IonContent,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonList
+  ]
 })
-export class SettingsComponent {
-  notificationsEnabled = true;
-  darkMode = false;
+export class SettingsComponent implements OnInit {
+  userName = '';
+  userEmail = '';
+  userPhoto = '';
   language = 'es';
+  darkMode = false;
 
-  toggleTheme() {
-    this.darkMode = !this.darkMode;
-    console.log('Tema oscuro:', this.darkMode);
+  constructor(private authService: AuthService) {}
+
+  ngOnInit() {
+    this.authService.user$.subscribe(user => {
+      if (user) {
+        this.userEmail = user.email || '';
+      }
+    });
   }
 
-  cerrarSesion() {
-    console.log('Cerrar sesión');
+  logout() {
+    this.authService.logout();
   }
+
+  changePhoto(event: any) {}
+  changeProfile() {}
+  changeLanguage() {}
+  toggleDarkMode() {}
 }
