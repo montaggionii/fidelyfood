@@ -1,8 +1,17 @@
 import { Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification, User } from '@angular/fire/auth';
-import { Observable, from } from 'rxjs';
-import { map as rxMap } from 'rxjs/operators';
+import {
+  Auth,
+  User,
+  reload,
+  signOut,
+  updateProfile,
+  sendEmailVerification,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword
+} from '@angular/fire/auth';
 import { Router } from '@angular/router';
+import { from, Observable } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -11,38 +20,43 @@ export class AuthService {
 
   constructor(private auth: Auth, private router: Router) {}
 
-  // Observable del usuario
+  // Observador de usuario autenticado
   get user$(): Observable<User | null> {
     return new Observable(observer => {
       this.auth.onAuthStateChanged(user => observer.next(user));
     });
   }
 
-  // Login
-  login(data: { email: string, password: string }): Observable<User> {
-    return from(signInWithEmailAndPassword(this.auth, data.email, data.password))
-      .pipe(rxMap((cred: any) => cred.user));
+  // LOGIN
+  login(data: { email: string; password: string }): Observable<User> {
+    return from(signInWithEmailAndPassword(this.auth, data.email, data.password)).pipe(
+      switchMap(async cred => {
+        await reload(cred.user); // refrescar datos
+        return cred.user;        // devolver usuario final
+      })
+    );
   }
 
-  // Logout
-  async logout() {
-    try {
-      await signOut(this.auth);
-      console.log('Sesión cerrada');
-      this.router.navigate(['/auth'], { replaceUrl: true });
-    } catch (error) {
-      console.error('Error cerrando sesión:', error);
-    }
-  }
-
-  // Registro
-  register(data: { name: string, email: string, password: string }): Observable<User> {
+  // REGISTRO
+  register(data: { name: string; email: string; password: string }): Observable<User> {
     return from(
       createUserWithEmailAndPassword(this.auth, data.email, data.password)
-        .then(userCred => {
-          sendEmailVerification(userCred.user);
+        .then(async userCred => {
+          await updateProfile(userCred.user, { displayName: data.name });
+          await sendEmailVerification(userCred.user);
           return userCred.user;
         })
     );
+  }
+
+  // LOGOUT
+  async logout() {
+    await signOut(this.auth);
+    this.router.navigate(['/auth'], { replaceUrl: true });
+  }
+
+  // Obtener nombre del usuario
+  getUserName(user: User | null): string {
+    return user?.displayName || user?.email?.split('@')[0] || 'Usuario';
   }
 }

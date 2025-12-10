@@ -1,3 +1,4 @@
+/* Mantienes todo lo tuyo */
 .auth-content {
   display: flex;
   justify-content: center;
@@ -50,4 +51,17 @@
   cursor: pointer;
   font-weight: bold;
   padding: 0;
+}
+
+/* --- NUEVO: bordes rojos cuando hay error --- */
+.invalid {
+  --highlight-color-focused: #f44336 !important;
+  --border-color: #f44336 !important;
+  --border-width: 2px;
+}
+
+/* --- NUEVO: estilo de mensaje de error debajo --- */
+ion-note {
+  margin-left: 16px;
+  font-size: 13px;
 }

@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
   IonInput, IonButton, IonLabel, IonItem, IonHeader,
-  IonToolbar, IonTitle, IonContent
+  IonToolbar, IonTitle, IonContent, IonNote
 } from '@ionic/angular/standalone';
-
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
+import { User } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-auth',
@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
   templateUrl: './auth.page.html',
   styleUrls: ['./auth.page.scss'],
   imports: [
+    IonNote,
     CommonModule,
     FormsModule,
     IonInput,
@@ -38,6 +39,11 @@ export class AuthPage implements OnInit {
   isLoginMode = true;
   splash = true;
 
+  nameTouched = false;
+  emailTouched = false;
+  passwordTouched = false;
+  confirmTouched = false;
+
   constructor(
     private authService: AuthService,
     private router: Router
@@ -47,13 +53,21 @@ export class AuthPage implements OnInit {
     setTimeout(() => this.splash = false, 1500);
 
     this.authService.user$.subscribe(user => {
-      if (user) this.router.navigate(['/tabs/home']);
+      if (user) {
+        const nombre = this.authService.getUserName(user);
+        alert(`¡Hola, ${nombre}!`);
+        this.router.navigate(['/tabs/home']);
+      }
     });
   }
 
   toggleMode() {
     this.isLoginMode = !this.isLoginMode;
     this.errorMsg = '';
+    this.nameTouched = false;
+    this.emailTouched = false;
+    this.passwordTouched = false;
+    this.confirmTouched = false;
   }
 
   submit() {
@@ -61,11 +75,12 @@ export class AuthPage implements OnInit {
     this.loading = true;
 
     if (this.isLoginMode) {
-
-      // --- LOGIN ---
+      // LOGIN
       this.authService.login({ email: this.email, password: this.password }).subscribe({
-        next: () => {
+        next: (user: User) => {
           this.loading = false;
+          const nombre = this.authService.getUserName(user);
+          alert(`¡Hola, ${nombre}!`);
           this.router.navigate(['/tabs/home']);
         },
         error: err => {
@@ -75,21 +90,23 @@ export class AuthPage implements OnInit {
       });
 
     } else {
-
-      // --- REGISTRO ---
+      // REGISTRO
       if (this.password !== this.confirmPassword) {
         this.errorMsg = 'Las contraseñas no coinciden';
         this.loading = false;
         return;
       }
 
-      this.authService.register({ name: this.name, email: this.email, password: this.password }).subscribe({
-        next: () => {
-          // Login automático
-          this.authService.login({ email: this.email, password: this.password }).subscribe(() => {
-            this.loading = false;
-            this.router.navigate(['/tabs/home']);
-          });
+      this.authService.register({
+        name: this.name,
+        email: this.email,
+        password: this.password
+      }).subscribe({
+        next: (user: User) => {
+          this.loading = false;
+          const nombre = this.authService.getUserName(user);
+          alert(`¡Bienvenido, ${nombre}!`);
+          this.router.navigate(['/tabs/home']);
         },
         error: err => {
           this.loading = false;

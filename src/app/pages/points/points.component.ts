@@ -3,9 +3,15 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonContent, IonList, IonItem, IonLabel, IonButton } from '@ionic/angular/standalone';
 import { TicketService } from '../../services/ticket.service';
-import { UserService } from '../../services/user.service';
+import { UserService, AllUsers, UserData } from '../../services/user.service';
 import { Ticket } from 'src/models/ticket.model';
-import { User } from 'src/models/user.model';
+
+interface UserDisplay {
+  uid: string;
+  nombre: string;
+  email: string;
+  puntos: number;
+}
 
 @Component({
   selector: 'app-points',
@@ -15,8 +21,9 @@ import { User } from 'src/models/user.model';
   imports: [CommonModule, IonContent, IonList, IonItem, IonLabel, IonButton]
 })
 export class PointsComponent implements OnInit {
+
   tickets: Ticket[] = [];
-  users: User[] = [];
+  users: UserDisplay[] = [];
 
   constructor(
     private ticketService: TicketService,
@@ -33,8 +40,8 @@ export class PointsComponent implements OnInit {
   // ========================
   loadTickets() {
     this.ticketService.getTickets().subscribe({
-      next: (data) => this.tickets = data,
-      error: (err) => console.error('Error al cargar tickets', err)
+      next: (data: Ticket[]) => this.tickets = data,
+      error: (err: any) => console.error('Error al cargar tickets', err)
     });
   }
 
@@ -46,12 +53,12 @@ export class PointsComponent implements OnInit {
       'Ticket de prueba',
       'Descripción de prueba',
       50,
-      this.users[0]
+      this.users[0] // ahora es UserDisplay, compatible con tu modelo Ticket
     );
 
     this.ticketService.addTicket(newTicket).subscribe({
       next: () => this.loadTickets(),
-      error: (err) => console.error('Error al crear ticket', err)
+      error: (err: any) => console.error('Error al crear ticket', err)
     });
   }
 
@@ -59,17 +66,36 @@ export class PointsComponent implements OnInit {
   // Usuarios
   // ========================
   loadUsers() {
-    this.userService.getUsers().subscribe({
-      next: (data) => this.users = data,
-      error: (err) => console.error('Error al cargar usuarios', err)
+    this.userService.getAllUsers().subscribe({
+      next: (data: AllUsers[]) => {
+        // 🔹 Mapeamos AllUsers a UserDisplay
+        this.users = data.map(u => ({
+          uid: u.uid,
+          nombre: u.data.name || 'Sin nombre',
+          email: u.data.email || 'Sin email',
+          puntos: u.data.points || 0
+        }));
+      },
+      error: (err: any) => console.error('Error al cargar usuarios', err)
     });
   }
 
-  addTestUser() {
-    const newUser: User = { nombre: 'Usuario Test', email: 'test@correo.com' };
-    this.userService.createUser(newUser).subscribe({
-      next: () => this.loadUsers(),
-      error: (err) => console.error('Error al crear usuario', err)
-    });
+  async addTestUser() {
+    const uid = 'usuarioTest_' + new Date().getTime(); // generar UID temporal
+    const userData: UserData = {
+      favorites: [],
+      points: 0,
+      tips: [],
+      email: 'test@correo.com',
+      name: 'Usuario Test'
+    };
+
+    try {
+      await this.userService.createUser(uid, userData);
+      console.log('Usuario creado correctamente');
+      this.loadUsers(); // recargar lista
+    } catch (err: any) {
+      console.error('Error al crear usuario', err);
+    }
   }
 }

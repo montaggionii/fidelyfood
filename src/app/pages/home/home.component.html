@@ -5,64 +5,55 @@
 </ion-header>
 
 <ion-content class="home-content" fullscreen>
-  <ng-container *ngIf="user$ | async as user; else guest">
-    <!-- Saludo -->
-    <div class="greeting">
-      <h1>¡Hola, {{ user.email }}!</h1>
-      <p>Descubre tus recompensas favoritas</p>
-    </div>
+  <div class="greeting">
+    <h1>¡Hola, {{ userName }}!</h1>
+    <p>Descubre tus recompensas favoritas</p>
+  </div>
 
-    <!-- Botón Escanear QR -->
-    <ion-button expand="block" class="scan-btn" (click)="scanTicket()">
-      <ion-icon slot="start" name="qr-code-outline"></ion-icon>
-      Escanear QR
-    </ion-button>
+  <div class="scan-container">
+    <ion-icon name="scan" class="scan-icon"></ion-icon>
+    <p>Toca para escanear tu código</p>
+  </div>
 
-    <!-- Puntos totales -->
-    <div class="total-points">
-      <ion-progress-bar [value]="totalPointsProgress"></ion-progress-bar>
-      <p>{{ totalPoints }} / {{ totalPointsMax }} puntos acumulados</p>
-    </div>
+  <ion-button expand="block" class="scan-btn" (click)="scanTicket()">
+    <ion-icon slot="start" name="qr-code-outline"></ion-icon>
+    Escanear QR
+  </ion-button>
 
-    <!-- Favoritos -->
-    <div class="favorites-header">
-      <h2>Negocios favoritos</h2>
-      <a href="#">Ver todos</a>
-    </div>
+  <div class="total-points">
+    <ion-progress-bar [value]="totalPointsProgress"></ion-progress-bar>
+    <p>{{ totalPoints }} / {{ totalPointsMax }} puntos acumulados</p>
+  </div>
 
+  <div class="favorites-header">
+    <h2>Negocios favoritos</h2>
+    <a href="#">Ver todos</a>
+  </div>
+
+  <ion-list>
+    <ion-card *ngFor="let r of favorites" class="favorite-card">
+      <img [src]="r.image" alt="{{ r.name }}">
+      <ion-card-header>
+        <ion-card-title>{{ r.name }}</ion-card-title>
+        <ion-card-subtitle>
+          <ion-icon name="location-outline"></ion-icon> {{ r.address }}
+        </ion-card-subtitle>
+        <p class="reward">{{ r.nextReward }}</p>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-progress-bar [value]="r.currentPoints / r.totalPoints"></ion-progress-bar>
+        <p class="points">{{ r.currentPoints }} / {{ r.totalPoints }}</p>
+        <ion-icon class="category-icon" [name]="r.icon"></ion-icon>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+
+  <div class="tips">
+    <h3>Consejos</h3>
     <ion-list>
-      <ion-card *ngFor="let r of favorites" class="favorite-card">
-        <img [src]="r.image" alt="{{ r.name }}">
-        <ion-card-header>
-          <ion-card-title>{{ r.name }}</ion-card-title>
-          <ion-card-subtitle>
-            <ion-icon name="location-outline"></ion-icon> {{ r.address }}
-          </ion-card-subtitle>
-          <p class="reward">{{ r.nextReward }}</p>
-        </ion-card-header>
-        <ion-card-content>
-          <ion-progress-bar [value]="r.currentPoints / r.totalPoints"></ion-progress-bar>
-          <p class="points">{{ r.currentPoints }} / {{ r.totalPoints }}</p>
-          <ion-icon class="category-icon" [name]="r.icon"></ion-icon>
-        </ion-card-content>
-      </ion-card>
+      <ion-item *ngFor="let tip of tips">
+        <ion-label>{{ tip }}</ion-label>
+      </ion-item>
     </ion-list>
-
-    <!-- Tips -->
-    <div class="tips">
-      <h3>Consejos</h3>
-      <ion-list>
-        <ion-item *ngFor="let tip of tips">
-          <ion-label>{{ tip }}</ion-label>
-        </ion-item>
-      </ion-list>
-    </div>
-  </ng-container>
-
-  <ng-template #guest>
-    <div class="greeting">
-      <h1>¡Hola!</h1>
-      <p>Inicia sesión para ver tus recompensas.</p>
-    </div>
-  </ng-template>
+  </div>
 </ion-content>

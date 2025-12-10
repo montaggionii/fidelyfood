@@ -11,6 +11,17 @@ import { IonicModule, ToastController } from '@ionic/angular';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+closeModal() {
+throw new Error('Method not implemented.');
+}
+fakeScan() {
+throw new Error('Method not implemented.');
+}
+qrContent: any;
+points: any;
+cerrar() {
+throw new Error('Method not implemented.');
+}
   constructor(private toastCtrl: ToastController) {}
 
   // Función de prueba que ya tenías

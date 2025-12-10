@@ -1,25 +1,86 @@
 // src/app/services/user.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Firestore, collection, collectionData, doc, getDoc, setDoc, updateDoc } from '@angular/fire/firestore';
+import { Auth, User } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
-import { User } from 'src/models/user.model';
+
+// Interfaz de datos de cada usuario
+export interface UserData {
+  favorites: any[];
+  points: number;
+  tips: string[];
+  email?: string;
+  name?: string;
+}
+
+// Interfaz para obtener todos los usuarios
+export interface AllUsers {
+  uid: string;
+  data: UserData;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  private backendUrl = 'http://localhost:3000/api/users';
+  constructor(private firestore: Firestore, private auth: Auth) {}
 
-  constructor(private http: HttpClient) {}
-
-  // Obtener todos los usuarios
-  getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.backendUrl);
+  // Observable con datos del usuario autenticado
+  getUserData(): Observable<UserData | null> {
+    return new Observable(observer => {
+      this.auth.onAuthStateChanged(async (user: User | null) => {
+        if (user) {
+          const userDoc = doc(this.firestore, `users/${user.uid}`);
+          const data = await getDoc(userDoc);
+          if (data.exists()) {
+            observer.next(data.data() as UserData);
+          } else {
+            // Si no existe, crear un documento inicial
+            const initialData: UserData = {
+              favorites: [],
+              points: 0,
+              tips: [],
+              email: user.email || '',
+              name: user.displayName || ''
+            };
+            await setDoc(userDoc, initialData);
+            observer.next(initialData);
+          }
+        } else {
+          observer.next(null);
+        }
+      });
+    });
   }
 
-  // Crear un nuevo usuario
-  createUser(user: User): Observable<User> {
-    return this.http.post<User>(this.backendUrl, user);
+  // Obtener todos los usuarios de la colección 'users'
+  getAllUsers(): Observable<AllUsers[]> {
+    const usersCollection = collection(this.firestore, 'users');
+    return collectionData(usersCollection, { idField: 'uid' }) as Observable<AllUsers[]>;
+  }
+
+  // Actualizar puntos del usuario
+  async updatePoints(uid: string, points: number) {
+    const userDoc = doc(this.firestore, `users/${uid}`);
+    await updateDoc(userDoc, { points });
+  }
+
+  // Actualizar favoritos del usuario
+  async updateFavorites(uid: string, favorites: any[]) {
+    const userDoc = doc(this.firestore, `users/${uid}`);
+    await updateDoc(userDoc, { favorites });
+  }
+
+  // Actualizar tips del usuario
+  async updateTips(uid: string, tips: string[]) {
+    const userDoc = doc(this.firestore, `users/${uid}`);
+    await updateDoc(userDoc, { tips });
+  }
+
+  // Crear un usuario manualmente (opcional)
+  async createUser(uid: string, data: UserData) {
+    const userDoc = doc(this.firestore, `users/${uid}`);
+    await setDoc(userDoc, data);
   }
 }
