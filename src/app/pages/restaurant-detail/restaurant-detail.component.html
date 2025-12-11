@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Detalles del Restaurante</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="restaurant; else noData">
+  <ion-card>
+    <img *ngIf="restaurant.imageUrl" [src]="restaurant.imageUrl" alt="{{ restaurant.name }}" />
+
+    <ion-card-header>
+      <ion-card-title>{{ restaurant.name }}</ion-card-title>
+      <ion-card-subtitle>Rating: {{ restaurant.rating }}</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <p><strong>Dirección:</strong> {{ restaurant.address }}</p>
+      <p *ngIf="restaurant.description"><strong>Descripción:</strong> {{ restaurant.description }}</p>
+      <p *ngIf="restaurant.openingHours"><strong>Horario:</strong> {{ restaurant.openingHours }}</p>
+    </ion-card-content>
+
+    <div style="padding: 16px; display: flex; gap: 8px;">
+      <ion-button color="success" (click)="bookTable()">Reservar Mesa</ion-button>
+      <ion-button color="tertiary" (click)="viewMenu()">Ver Menú</ion-button>
+      <ion-button (click)="toggleFavorite()">
+        <ion-icon [name]="isFavorite ? 'heart' : 'heart-outline'"></ion-icon>
+        {{ isFavorite ? 'Favorito' : 'Agregar a Favoritos' }}
+      </ion-button>
+    </div>
+  </ion-card>
+</ion-content>
+
+<ng-template #noData>
+  <p style="padding: 16px;">No se encontró información del restaurante.</p>
+</ng-template>

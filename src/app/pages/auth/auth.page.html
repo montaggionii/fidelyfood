@@ -1,0 +1,70 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ isLoginMode ? 'Iniciar Sesión' : 'Crear Cuenta' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="auth-content">
+  <div class="auth-wrapper">
+
+    <h2 class="splash">{{ isLoginMode ? 'Iniciar Sesión' : 'Crear Cuenta' }}</h2>
+
+    <div class="auth-form">
+
+      <!-- NOMBRE (solo registro) -->
+      <ion-item *ngIf="!isLoginMode"
+                [class.invalid]="nameTouched && !name">
+        <ion-label position="floating">Nombre</ion-label>
+        <ion-input [(ngModel)]="name" (ionBlur)="nameTouched = true"></ion-input>
+      </ion-item>
+      <ion-note color="danger" *ngIf="!isLoginMode && nameTouched && !name">
+        El nombre es obligatorio
+      </ion-note>
+
+      <!-- EMAIL -->
+      <ion-item [class.invalid]="emailTouched && !email">
+        <ion-label position="floating">Email</ion-label>
+        <ion-input type="email" [(ngModel)]="email" (ionBlur)="emailTouched = true"></ion-input>
+      </ion-item>
+      <ion-note color="danger" *ngIf="emailTouched && !email">
+        El email es obligatorio
+      </ion-note>
+
+      <!-- PASSWORD -->
+      <ion-item [class.invalid]="passwordTouched && (!password || password.length < 6)">
+        <ion-label position="floating">Contraseña</ion-label>
+        <ion-input type="password" [(ngModel)]="password" (ionBlur)="passwordTouched = true"></ion-input>
+      </ion-item>
+      <ion-note color="danger" *ngIf="passwordTouched && password && password.length < 6">
+        La contraseña debe tener al menos 6 caracteres
+      </ion-note>
+
+      <!-- CONFIRM PASSWORD -->
+      <ion-item *ngIf="!isLoginMode"
+                [class.invalid]="confirmTouched && confirmPassword !== password">
+        <ion-label position="floating">Repetir contraseña</ion-label>
+        <ion-input type="password" [(ngModel)]="confirmPassword" (ionBlur)="confirmTouched = true"></ion-input>
+      </ion-item>
+      <ion-note color="danger" *ngIf="!isLoginMode && confirmTouched && confirmPassword !== password">
+        Las contraseñas no coinciden
+      </ion-note>
+
+      <!-- BOTÓN -->
+      <ion-button expand="block" (click)="submit()" [disabled]="loading">
+        {{ loading ? 'Cargando...' : (isLoginMode ? 'Entrar' : 'Registrarme') }}
+      </ion-button>
+
+      <!-- CAMBIAR MODO -->
+      <p class="toggle-text">
+        {{ isLoginMode ? '¿No tienes cuenta?' : '¿Ya tienes cuenta?' }}
+        <button class="link-button" (click)="toggleMode()">
+          {{ isLoginMode ? 'Crear cuenta' : 'Iniciar sesión' }}
+        </button>
+      </p>
+
+      <!-- ERROR GENERAL -->
+      <p *ngIf="errorMsg" class="error-msg">{{ errorMsg }}</p>
+
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Configuración</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="settings-content">
+  <ion-list>
+    <ion-item>
+      <ion-avatar slot="start">
+        <img [src]="userPhoto" />
+      </ion-avatar>
+      <ion-label>Foto de perfil</ion-label>
+      <input type="file" (change)="changePhoto($event)" />
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Nombre</ion-label>
+      <ion-input [(ngModel)]="userName"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Email</ion-label>
+      <ion-input [(ngModel)]="userEmail"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-button expand="block" (click)="changeProfile()">Guardar perfil</ion-button>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Idioma</ion-label>
+      <ion-input [(ngModel)]="language" placeholder="es / en"></ion-input>
+      <ion-button slot="end" (click)="changeLanguage()">Cambiar</ion-button>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Modo oscuro</ion-label>
+      <ion-toggle [(ngModel)]="darkMode" (ionChange)="toggleDarkMode()"></ion-toggle>
+    </ion-item>
+
+    <ion-item>
+      <ion-button expand="block" color="danger" (click)="logout()">Cerrar sesión</ion-button>
+    </ion-item>
+  </ion-list>
+</ion-content>

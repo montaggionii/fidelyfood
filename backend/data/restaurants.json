@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "name": "Restaurante La Parrilla",
+    "category": "Asador",
+    "rating": 4.5
+  },
+  {
+    "id": 2,
+    "name": "Sushi World",
+    "category": "Japonesa",
+    "rating": 4.7
+  }
+]

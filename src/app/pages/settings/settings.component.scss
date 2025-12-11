@@ -1,0 +1,29 @@
+.settings-content {
+  padding: 16px;
+
+  ion-item {
+    margin-bottom: 16px;
+
+    ion-avatar {
+      width: 60px;
+      height: 60px;
+
+      img {
+        border-radius: 50%;
+      }
+    }
+
+    input[type="file"] {
+      display: block;
+      margin-left: 16px;
+    }
+
+    ion-input {
+      --padding-start: 8px;
+    }
+
+    ion-button {
+      margin-top: 8px;
+    }
+  }
+}

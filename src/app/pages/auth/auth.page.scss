@@ -1,0 +1,67 @@
+/* Mantienes todo lo tuyo */
+.auth-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  --padding-top: 0;
+  --padding-bottom: 0;
+}
+
+.auth-wrapper {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+}
+
+.splash {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #3880ff;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.auth-form {
+  width: 100%;
+}
+
+.auth-form ion-item {
+  margin-bottom: 15px;
+}
+
+.error-msg {
+  color: red;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.toggle-text {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  color: #3880ff;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 0;
+}
+
+/* --- NUEVO: bordes rojos cuando hay error --- */
+.invalid {
+  --highlight-color-focused: #f44336 !important;
+  --border-color: #f44336 !important;
+  --border-width: 2px;
+}
+
+/* --- NUEVO: estilo de mensaje de error debajo --- */
+ion-note {
+  margin-left: 16px;
+  font-size: 13px;
+}
