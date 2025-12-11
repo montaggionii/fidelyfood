@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
   IonButton, IonItem, IonLabel, IonInput, IonAvatar, IonToggle,
-  IonContent, IonHeader, IonToolbar, IonTitle, IonList
-} from '@ionic/angular/standalone';
+  IonContent, IonHeader, IonToolbar, IonTitle, IonList, IonCardTitle, IonCard } from '@ionic/angular/standalone';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -12,7 +11,7 @@ import { AuthService } from '../../services/auth.service';
   standalone: true,
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss'],
-  imports: [
+  imports: [IonCard, IonCardTitle, 
     CommonModule,
     FormsModule,
     IonButton,

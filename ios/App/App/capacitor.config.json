@@ -1,0 +1,12 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "fidelyfood",
+	"webDir": "www",
+	"packageClassList": [
+		"BarcodeScanner",
+		"AppPlugin",
+		"HapticsPlugin",
+		"KeyboardPlugin",
+		"StatusBarPlugin"
+	]
+}
